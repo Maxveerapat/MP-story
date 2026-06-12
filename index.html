@@ -254,6 +254,29 @@ figure.ph.vid::before{left:auto;right:6px;transform:rotate(3deg)}
 .enter button:hover svg{fill:var(--bg)}
 .enter .ehint{font-family:var(--mono);font-size:9.5px;letter-spacing:.24em;color:var(--faint);text-transform:uppercase}
 .entered .heart{animation-play-state:running}
+/* ---------- collapsible chapters ---------- */
+.chapgroup .chaptoggle h2{font-family:var(--dot);font-weight:900;font-size:clamp(27px,6.6vw,40px);line-height:1.22;letter-spacing:.015em}
+.chapgroup .chaptoggle .ch-hand{font-size:24px;margin-top:9px}
+.chapctl{position:sticky;top:0;z-index:90;display:flex;gap:14px;justify-content:center;align-items:center;
+  padding:13px 0;background:rgba(5,5,5,.82);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);
+  font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase}
+.chapctl button{background:none;border:0;color:var(--faint);cursor:pointer;font:inherit;letter-spacing:inherit;padding:4px 2px}
+.chapctl button:hover{color:var(--pink)}
+.chapctl .sep{color:var(--line)}
+.chaptoggle{cursor:pointer;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;width:100%;
+  background:none;border:0;text-align:left;color:inherit;font:inherit;padding:0}
+.chaptoggle .chev{flex:none;width:26px;height:26px;border:1px solid var(--line);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;transition:transform .35s ease,border-color .3s;margin-top:6px}
+.chaptoggle .chev svg{width:11px;height:11px;stroke:var(--faint);fill:none;stroke-width:2}
+.chapgroup.open .chaptoggle .chev{transform:rotate(180deg);border-color:var(--pink)}
+.chapgroup.open .chaptoggle .chev svg{stroke:var(--pink)}
+.chaptoggle:hover .chev{border-color:var(--pink)}
+.chapbody{display:none}
+.chapgroup.open .chapbody{display:block;animation:fadein .6s ease both}
+.chapgroup{border-top:1px solid var(--line)}
+.chap-meta{flex:none;text-align:right;font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;color:var(--faint);
+  text-transform:uppercase;margin-top:7px;max-width:36%}
+@media (max-width:560px){.chap-meta{display:none}}
 @media (max-width:520px){ .media.grid2{grid-template-columns:1fr} }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
@@ -329,7 +352,7 @@ figure.ph.vid::before{left:auto;right:6px;transform:rotate(3deg)}
   <div class="node"></div>
   <p class="date">18 DEC 2024 · 22:00</p>
   <h3>Sushiro, Emporium</h3>
-  <p class="body">Max made plans to catch up with P&#8217;Amy after far too long. Primrose had just finished the gym with Amy — and came along. He expected Amy. She expected Amy. Neither expected each other. Three people around a sushi counter, and two of them had no idea this was the beginning of anything.</p>
+  <p class="body">Max made plans to catch up with P&#8217;Amy after far too long. Primrose had just finished the gym with Amy — and came along. He expected Amy. She expected Amy. Neither expected each other. Back then they were both still in relationships — ones neither of them was happy in. Three people around a sushi counter, and two of them had no idea this was the beginning of anything.</p>
   <div class='media'><figure class='art'><svg viewBox="0 0 220 120" class="line-art" aria-hidden="true">
   <ellipse cx="110" cy="86" rx="78" ry="14"/>
   <path d="M58 78 q0 -16 22 -16 h60 q22 0 22 16"/>
@@ -344,7 +367,7 @@ figure.ph.vid::before{left:auto;right:6px;transform:rotate(3deg)}
   <div class="node"></div>
   <p class="date">24 SEP 2025</p>
   <h3>Sukiya, Asoke</h3>
-  <p class="body">Nine months later, fate tried again — this time through P&#8217;Fluke. A simple lunch opposite the KOAN office, and once again: neither of them knew the other would be there. Same surprise, different colleague. The universe was clearly trying. Someone was being a little slow. No names.</p>
+  <p class="body">Nine months later, fate tried again — this time through P&#8217;Fluke. By now they were both newly single. A simple lunch opposite the KOAN office, and once again: neither of them knew the other would be there. Same surprise, different colleague. The universe was clearly trying.</p>
   <div class='media'><figure class='art'><svg viewBox="0 0 220 120" class="line-art" aria-hidden="true">
   <path d="M46 56 q64 -22 128 0 q-6 40 -64 40 q-58 0 -64 -40Z"/>
   <path d="M64 56 q46 -14 92 0"/>
@@ -832,6 +855,75 @@ try {
           return sSet('ours',cur).then(function(){drawOurs(cur);resetForm();});});});
     }
   }
+
+  // ---------- collapse / group by chapter ----------
+  (function(){
+    var main=document.querySelector('main'); if(!main)return;
+    var CHEV='<span class="chev"><svg viewBox="0 0 24 24"><path d="M5 9l7 7 7-7"/></svg></span>';
+    var kids=Array.prototype.slice.call(main.children);
+    var groups=[], cur=null;
+
+    function newGroup(section, numText, titleHTML, metaText, subText){
+      section.classList.add('chapgroup');
+      // build toggle header
+      var head=section.querySelector('.ch-head');
+      var bodyNodes;
+      var toggle=document.createElement('button'); toggle.type='button'; toggle.className='chaptoggle';
+      var left=document.createElement('div'); left.style.flex='1';
+      if(head){
+        // move existing header content into the toggle's left side
+        while(head.firstChild) left.appendChild(head.firstChild);
+        head.remove();
+      } else {
+        left.innerHTML='<p class="ch-num">'+numText+' <span class="sl">/</span></p><h2>'+titleHTML+'</h2>'+(subText?'<p class="ch-hand hand">'+subText+'</p>':'');
+      }
+      // remaining children of the section become the body
+      var body=document.createElement('div'); body.className='chapbody';
+      var rest=Array.prototype.slice.call(section.childNodes);
+      rest.forEach(function(n){ body.appendChild(n); });
+      var meta=document.createElement('span'); meta.className='chap-meta'; meta.textContent=metaText||'';
+      toggle.appendChild(left);
+      toggle.appendChild(meta);
+      var chev=document.createElement('span'); chev.innerHTML=CHEV; toggle.appendChild(chev.firstChild);
+      section.appendChild(toggle);
+      section.appendChild(body);
+      var g={section:section, body:body, toggle:toggle};
+      toggle.addEventListener('click', function(){ setOpen(g, !section.classList.contains('open')); });
+      groups.push(g);
+      return g;
+    }
+
+    function setOpen(g, open){
+      g.section.classList.toggle('open', open);
+      if(open){ g.body.querySelectorAll('.reveal').forEach(function(el){el.classList.add('in');}); }
+    }
+
+    kids.forEach(function(el){
+      if(el.matches('section.chapter')){
+        cur=newGroup(el);
+      } else if(el.matches('aside.note')||el.matches('section.cast')){
+        if(cur){ cur.body.appendChild(el); }   // fold interstitials into the current chapter
+      } else if(el.matches('section.today')){
+        // relabel existing chapter number if any; inject CHAPTER 06
+        cur=newGroup(el, 'CHAPTER 06', 'Her Birthday', '12 june', 'the first birthday we get to call ours');
+      } else if(el.matches('section.tomorrow')){
+        cur=newGroup(el, 'CHAPTER X', 'And Our Future', 'still being written', 'the chapter with no ending — we just keep adding to it');
+      }
+    });
+
+    // top control bar (sticky) — inserted right after hero
+    var bar=document.createElement('div'); bar.className='chapctl';
+    bar.innerHTML='<button data-all="open">expand all</button><span class="sep">·</span><button data-all="close">collapse all</button>';
+    var hero=main.querySelector('.hero');
+    if(hero&&hero.nextSibling) main.insertBefore(bar, hero.nextSibling); else main.insertBefore(bar, main.firstChild);
+    bar.addEventListener('click', function(e){
+      var a=e.target.getAttribute&&e.target.getAttribute('data-all'); if(!a)return;
+      groups.forEach(function(g){ setOpen(g, a==='open'); });
+    });
+
+    // default: everything collapsed
+    groups.forEach(function(g){ setOpen(g, false); });
+  })();
 
 })();
 </script>
