@@ -131,6 +131,12 @@ figure.art{text-align:center;padding:16px 0 4px}
 .tomorrow h2{font-family:var(--dot);font-weight:700;font-size:clamp(26px,6.4vw,38px)}
 .tomorrow .lead{color:var(--grey);max-width:46ch;margin:20px auto 0}
 .counter{margin:44px auto 0}
+.counters{display:flex;align-items:flex-start;justify-content:center;gap:20px;margin:44px auto 0}
+.counters .counter{margin:0;flex:0 1 160px}
+.counters .num{font-size:clamp(40px,12vw,64px)}
+.counters .lbl{margin-top:10px;line-height:1.7}
+.cdiv{align-self:stretch;width:1px;background:var(--line);margin:6px 0}
+.since{display:inline-block;margin-top:2px;color:var(--faint)}
 .counter .num{font-family:var(--dot);font-weight:900;font-size:clamp(58px,15vw,92px);color:var(--pink);line-height:1;
   text-shadow:0 0 24px rgba(255,143,181,.35)}
 .counter .lbl{font-family:var(--mono);letter-spacing:.3em;font-size:10.5px;color:var(--grey);text-transform:uppercase;margin-top:12px}
@@ -289,6 +295,7 @@ figure.ph.vid::before{left:auto;right:6px;transform:rotate(3deg)}
 </head>
 <body>
 <audio id="bgm" src="media/love-theme.mp3" loop preload="auto"></audio>
+<audio id="bgm2" src="media/Song2.mp3" loop preload="auto"></audio>
 <div class="enter" id="enter">
   <p class="eh">MAX &amp; PRIMROSE</p>
   <p class="es">a love story, made just for you</p>
@@ -484,7 +491,7 @@ figure.ph.vid::before{left:auto;right:6px;transform:rotate(3deg)}
   <div class="node"></div>
   <p class="date">10 MAY 2026</p>
   <h3>First golf — and courtside duty</h3>
-  <p class="body">Morning: first golf together, one careful grip lesson at a time. Later: the first time Prim came to watch Max play basketball — ice cream in hand, eyes on number one.</p>
+  <p class="body">Morning: first golf together, one careful grip lesson at a time. Later: the first time Prim came to watch Max play basketball — Bonchon in hand, eyes on just one player.</p>
   <div class='media grid2'><figure class='ph'><img src='img/golf1.jpg' alt='' loading='lazy'><button class="like" aria-label="love this"><svg viewBox="0 0 24 24"><path d="M12 20C5.5 15 3 11.8 3 8.6A4.6 4.6 0 0 1 12 6a4.6 4.6 0 0 1 9 2.6c0 3.2-2.5 6.4-9 11.4Z"/></svg></button><figcaption>hands-on coaching. strictly necessary.</figcaption></figure><figure class='ph'><img src='img/golf2.jpg' alt='' loading='lazy'><button class="like" aria-label="love this"><svg viewBox="0 0 24 24"><path d="M12 20C5.5 15 3 11.8 3 8.6A4.6 4.6 0 0 1 12 6a4.6 4.6 0 0 1 9 2.6c0 3.2-2.5 6.4-9 11.4Z"/></svg></button><figcaption>form check.</figcaption></figure><figure class='ph'><img src='img/basket.jpg' alt='' loading='lazy'><button class="like" aria-label="love this"><svg viewBox="0 0 24 24"><path d="M12 20C5.5 15 3 11.8 3 8.6A4.6 4.6 0 0 1 12 6a4.6 4.6 0 0 1 9 2.6c0 3.2-2.5 6.4-9 11.4Z"/></svg></button><span class='hnote'>courtside, with ice cream <svg class="ih" viewBox="0 0 24 24"><path d="M12 20C5.5 15 3 11.8 3 8.6A4.6 4.6 0 0 1 12 6a4.6 4.6 0 0 1 9 2.6c0 3.2-2.5 6.4-9 11.4Z"/></svg></span></figure></div>
   
 </article>
@@ -590,7 +597,7 @@ figure.ph.vid::before{left:auto;right:6px;transform:rotate(3deg)}
   <div class="glyphrow"><i></i><i></i><i></i><i></i><i class="dim"></i><i class="dim"></i><i class="dim"></i></div>
   <h2>…AND OUR FUTURE</h2>
   <p class="lead">Whenever there&#8217;s a moment worth keeping, we come back here — together — and add it. An archive of us, still growing.</p>
-  <div class="counter"><div class="num" id="days">—</div><div class="lbl">days of us — and counting</div></div>
+  <div class="counters"><div class="counter"><div class="num" id="days">—</div><div class="lbl">days together<br><span class="since">since 3 may</span></div></div><div class="cdiv"></div><div class="counter"><div class="num" id="days2">—</div><div class="lbl">days official<br><span class="since">since 3 jul</span></div></div></div>
   <div id="ours"></div>
   
   <div class="addwrap">
@@ -672,7 +679,7 @@ try {
   function startMusic(){ if(!bgm||musicOn)return; musicOn=true;
     bgm.volume=0; bgm.play().then(function(){ fadeMusic(0.42,1200); }).catch(function(){ musicOn=false; }); }
   function fadeMusic(to,ms){ if(!bgm)return; var from=bgm.volume,t0=performance.now();
-    (function step(now){ var k=Math.min(1,(now-t0)/ms); bgm.volume=from+(to-from)*k;
+    (function step(now){ var k=Math.min(1,(now-t0)/ms); bgm.volume=Math.max(0,Math.min(1,from+(to-from)*k));
       if(k<1) requestAnimationFrame(step); })(performance.now()); }
   function duck(on){ if(!bgm||!musicOn)return;
     if(on){ duckers++; fadeMusic(0,500); }
@@ -706,6 +713,7 @@ try {
 
   var d0=new Date(2026,4,3),now=new Date();
   document.getElementById('days').textContent=Math.floor((now-d0)/864e5)+1;
+  var d1=new Date(2026,6,3),o2=document.getElementById('days2');if(o2){o2.textContent=Math.max(0,Math.floor((now-d1)/864e5)+1);}
 
     var HEART='M6.5 12C2 8.4 0 6 0 3.7A3.7 3.7 0 0 1 6.5 1.3 3.7 3.7 0 0 1 13 3.7C13 6 11 8.4 6.5 12Z';
   function hearts(cx,cy,n,spread){if(rm)return;for(var i=0;i<n;i++){var p=document.createElement('div');var sz=9+Math.random()*10;
@@ -925,6 +933,62 @@ try {
     groups.forEach(function(g){ setOpen(g, false); });
   })();
 
+})();
+</script>
+<script>
+/* post-birthday: expand the future chapter, then glide down to it FROM THE TOP,
+   landing with the chapters above still in view so it's clear you can scroll up. */
+(function(){
+  if('scrollRestoration' in history){try{history.scrollRestoration='manual';}catch(e){}}
+  function go(){
+    var fut=document.querySelector('section.tomorrow'); if(!fut)return;
+    if(!fut.classList.contains('open')){
+      var t=fut.querySelector('.chaptoggle'); if(t){t.click();} else {fut.classList.add('open');}
+    }
+    var prev=fut.previousElementSibling;
+    while(prev && !(prev.classList && prev.classList.contains('chapgroup'))) prev=prev.previousElementSibling;
+    var anchor=prev?(prev.querySelector('.chaptoggle')||prev):fut;
+    var y=anchor.getBoundingClientRect().top+window.pageYOffset-86;
+    window.scrollTo({top:y<0?0:y,behavior:'smooth'});
+  }
+  function arm(){
+    window.scrollTo(0,0);
+    var btn=document.getElementById('enterbtn');
+    if(btn){ btn.addEventListener('click',function(){ setTimeout(go,950); }); }
+    else { window.addEventListener('load',function(){ setTimeout(go,500); }); }
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',arm);} else {arm();}
+})();
+</script>
+<script>
+/* second track: Song2 plays while the future chapter is OPEN; love-theme stays the default.
+   Gracefully falls back to love-theme if Song2 is missing. */
+(function(){
+  var bgm=document.getElementById('bgm'), s2=document.getElementById('bgm2'),
+      fut=document.querySelector('section.tomorrow');
+  if(!s2||!fut) return;
+  s2.loop=true; s2.volume=0; var s2ok=true;
+  s2.addEventListener('error',function(){ s2ok=false; try{s2.pause();}catch(e){} if(bgm){bgm.volume=1;} });
+  function entered(){ return document.body.classList.contains('entered'); }
+  var timer, ONVOL=0.42;
+  function setVol(el,v){ if(!el)return; v=v<0?0:(v>1?1:v); try{el.volume=v;}catch(e){} }
+  function fade(inA,outA){
+    clearInterval(timer);
+    if(inA){ inA.play().catch(function(){}); }
+    timer=setInterval(function(){
+      if(inA) setVol(inA, Math.min(ONVOL,(inA.volume||0)+0.05));
+      if(outA) setVol(outA, (outA.volume||0)-0.05);
+      var inDone=!inA||inA.volume>=ONVOL-0.001, outDone=!outA||outA.volume<=0;
+      if(inDone&&outDone){ clearInterval(timer); if(outA){try{outA.pause();}catch(e){}} }
+    },70);
+  }
+  function sync(){
+    if(!entered()) return;
+    if(fut.classList.contains('open') && s2ok){ fade(s2,bgm); } else { fade(bgm,s2); }
+  }
+  new MutationObserver(sync).observe(fut,{attributes:true,attributeFilter:['class']});
+  var eb=document.getElementById('enterbtn');
+  if(eb){ eb.addEventListener('click',function(){ setTimeout(sync,1200); }); }
 })();
 </script>
 </body></html>
