@@ -217,6 +217,24 @@ figure.ph.vid::before{left:auto;right:6px;transform:rotate(3deg)}
 .ourm{position:relative;border-left:1px solid var(--line);padding-left:26px}
 .ourm h4{font-weight:500;font-size:21px;line-height:1.3;margin:2px 0 10px;letter-spacing:-.01em}
 .ourm .tx{color:#d9d9d4;max-width:58ch}
+.ourm-tools{position:absolute;top:0;right:0;display:flex;gap:6px}
+.ourm-tools .del,.ourm-tools .edt{position:static}
+.ourm .edt{background:none;border:1px solid var(--line);color:var(--faint);font-family:var(--mono);font-size:10px;letter-spacing:.12em;padding:5px 9px;cursor:pointer;text-transform:uppercase}
+.ourm .edt:hover{border-color:var(--pink);color:var(--pink)}
+.ourm.editing>.date,.ourm.editing>h4,.ourm.editing>.tx,.ourm.editing>.pics{display:none}
+.ourm-edit{display:grid;gap:10px;margin-top:8px}
+.ourm-edit input,.ourm-edit textarea{background:none;border:1px solid var(--line);color:var(--white);font-family:var(--body);font-size:15px;padding:10px 12px;width:100%}
+.ourm-edit textarea{min-height:92px;resize:vertical}
+.ourm-epics{display:flex;flex-wrap:wrap;gap:12px}
+.ourm-epics .epic{position:relative;width:74px;height:74px}
+.ourm-epics .epic img{width:100%;height:100%;object-fit:cover;border:1px solid var(--line)}
+.ourm-epics .epic .epx{position:absolute;top:-8px;right:-8px;width:22px;height:22px;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:var(--white);cursor:pointer;font-size:13px;line-height:1;padding:0}
+.ourm-epics .epic.drop img{opacity:.28;filter:grayscale(1)}
+.ourm-epics .epic.drop .epx{border-color:var(--pink);color:var(--pink)}
+.ourm-erow{display:flex;gap:10px}
+.ourm-edit .sv,.ourm-edit .cx{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:9px 18px;cursor:pointer;background:none;border:1px solid var(--line)}
+.ourm-edit .sv{border-color:var(--pink);color:var(--pink)}
+.ourm-edit .cx{color:var(--faint)}
 .ourm .pics{display:grid;gap:18px;margin-top:16px}
 .ourm .pics img{width:100%;display:block;border:1px solid var(--line);cursor:zoom-in}
 .ourm .pics .pic{position:relative}
@@ -492,7 +510,7 @@ figure.ph.vid::before{left:auto;right:6px;transform:rotate(3deg)}
   <p class="date">10 MAY 2026</p>
   <h3>First golf — and courtside duty</h3>
   <p class="body">Morning: first golf together, one careful grip lesson at a time. Later: the first time Prim came to watch Max play basketball — Bonchon in hand, eyes on just one player.</p>
-  <div class='media grid2'><figure class='ph'><img src='img/golf1.jpg' alt='' loading='lazy'><button class="like" aria-label="love this"><svg viewBox="0 0 24 24"><path d="M12 20C5.5 15 3 11.8 3 8.6A4.6 4.6 0 0 1 12 6a4.6 4.6 0 0 1 9 2.6c0 3.2-2.5 6.4-9 11.4Z"/></svg></button><figcaption>hands-on coaching. strictly necessary.</figcaption></figure><figure class='ph'><img src='img/golf2.jpg' alt='' loading='lazy'><button class="like" aria-label="love this"><svg viewBox="0 0 24 24"><path d="M12 20C5.5 15 3 11.8 3 8.6A4.6 4.6 0 0 1 12 6a4.6 4.6 0 0 1 9 2.6c0 3.2-2.5 6.4-9 11.4Z"/></svg></button><figcaption>form check.</figcaption></figure><figure class='ph'><img src='img/basket.jpg' alt='' loading='lazy'><button class="like" aria-label="love this"><svg viewBox="0 0 24 24"><path d="M12 20C5.5 15 3 11.8 3 8.6A4.6 4.6 0 0 1 12 6a4.6 4.6 0 0 1 9 2.6c0 3.2-2.5 6.4-9 11.4Z"/></svg></button><span class='hnote'>courtside, with ice cream <svg class="ih" viewBox="0 0 24 24"><path d="M12 20C5.5 15 3 11.8 3 8.6A4.6 4.6 0 0 1 12 6a4.6 4.6 0 0 1 9 2.6c0 3.2-2.5 6.4-9 11.4Z"/></svg></span></figure></div>
+  <div class='media grid2'><figure class='ph'><img src='img/golf1.jpg' alt='' loading='lazy'><button class="like" aria-label="love this"><svg viewBox="0 0 24 24"><path d="M12 20C5.5 15 3 11.8 3 8.6A4.6 4.6 0 0 1 12 6a4.6 4.6 0 0 1 9 2.6c0 3.2-2.5 6.4-9 11.4Z"/></svg></button><figcaption>hands-on coaching. strictly necessary.</figcaption></figure><figure class='ph'><img src='img/golf2.jpg' alt='' loading='lazy'><button class="like" aria-label="love this"><svg viewBox="0 0 24 24"><path d="M12 20C5.5 15 3 11.8 3 8.6A4.6 4.6 0 0 1 12 6a4.6 4.6 0 0 1 9 2.6c0 3.2-2.5 6.4-9 11.4Z"/></svg></button><figcaption>form check.</figcaption></figure><figure class='ph'><img src='img/basket.jpg' alt='' loading='lazy'><button class="like" aria-label="love this"><svg viewBox="0 0 24 24"><path d="M12 20C5.5 15 3 11.8 3 8.6A4.6 4.6 0 0 1 12 6a4.6 4.6 0 0 1 9 2.6c0 3.2-2.5 6.4-9 11.4Z"/></svg></button><span class='hnote'>courtside, with Bonchon <svg class="ih" viewBox="0 0 24 24"><path d="M12 20C5.5 15 3 11.8 3 8.6A4.6 4.6 0 0 1 12 6a4.6 4.6 0 0 1 9 2.6c0 3.2-2.5 6.4-9 11.4Z"/></svg></span></figure></div>
   
 </article>
 <article class="moment reveal">
@@ -815,17 +833,47 @@ try {
   if(ours){
     var MONTHS=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
     function fdate(v){if(!v)return 'SOMEDAY';var p=v.split('-');return parseInt(p[2],10)+' '+MONTHS[parseInt(p[1],10)-1]+' '+p[0];}
-    function renderOne(m,onDel){
+    function renderOne(m,onDel,onEdit){
       var a=document.createElement('article');a.className='ourm';
+      var tools=document.createElement('div');tools.className='ourm-tools';
+      var edit=document.createElement('button');edit.className='edt';edit.textContent='edit';
       var del=document.createElement('button');del.className='del';del.textContent='remove';
       del.addEventListener('click',function(){if(!confirm('remove this memory?'))return;onDel();});
+      tools.appendChild(edit);tools.appendChild(del);
       var dt=document.createElement('p');dt.className='date';dt.textContent=fdate(m.d);
       var h=document.createElement('h4');h.textContent=m.t||'untitled, but unforgettable';
-      a.appendChild(del);a.appendChild(dt);a.appendChild(h);
+      a.appendChild(tools);a.appendChild(dt);a.appendChild(h);
       if(m.x){var tx=document.createElement('p');tx.className='tx';tx.textContent=m.x;a.appendChild(tx);}
       if(m.p&&m.p.length){var g=document.createElement('div');g.className='pics';
         m.p.forEach(function(src){var w=document.createElement('div');w.className='pic';
           var im=new Image();im.src=src;zoomable(im);w.appendChild(im);g.appendChild(w);});a.appendChild(g);}
+      edit.addEventListener('click',function(){
+        if(a.querySelector('.ourm-edit'))return;
+        var box=document.createElement('div');box.className='ourm-edit';
+        var di=document.createElement('input');di.type='date';di.value=m.d||'';
+        var ti=document.createElement('input');ti.type='text';ti.value=m.t||'';ti.placeholder='title';
+        var xi=document.createElement('textarea');xi.value=m.x||'';xi.placeholder='write the memory...';
+        box.appendChild(di);box.appendChild(ti);box.appendChild(xi);
+        var keep=(m.p||[]).slice();
+        if(keep.length){var pg=document.createElement('div');pg.className='ourm-epics';
+          keep.forEach(function(psrc){var pw=document.createElement('div');pw.className='epic';
+            var im=new Image();im.src=psrc;pw.appendChild(im);
+            var rm=document.createElement('button');rm.type='button';rm.className='epx';rm.textContent='\u00d7';
+            rm.addEventListener('click',function(){pw.classList.toggle('drop');});
+            pw.appendChild(rm);pg.appendChild(pw);});
+          box.appendChild(pg);}
+        var row=document.createElement('div');row.className='ourm-erow';
+        var save=document.createElement('button');save.type='button';save.className='sv';save.textContent='save';
+        var cancel=document.createElement('button');cancel.type='button';cancel.className='cx';cancel.textContent='cancel';
+        row.appendChild(save);row.appendChild(cancel);box.appendChild(row);
+        a.classList.add('editing');a.appendChild(box);
+        cancel.addEventListener('click',function(){a.classList.remove('editing');box.remove();});
+        save.addEventListener('click',function(){
+          var pics=[],ws=box.querySelectorAll('.ourm-epics .epic');
+          if(ws.length){for(var pi=0;pi<ws.length;pi++){if(!ws[pi].classList.contains('drop'))pics.push(keep[pi]);}}
+          else{pics=keep;}
+          onEdit&&onEdit({d:di.value,t:ti.value.trim(),x:xi.value.trim(),p:pics});});
+      });
       return a;}
     var addbtn=document.getElementById('addmem'),form=document.getElementById('memform'),
         mfd=document.getElementById('mf-date'),mft=document.getElementById('mf-title'),
@@ -846,7 +894,7 @@ try {
       var MC=__db.collection('memories');
       MC.orderBy('ts').onSnapshot(function(snap){ours.innerHTML='';
         snap.forEach(function(doc){var m=doc.data();
-          ours.appendChild(renderOne(m,function(){doc.ref.delete();}));});},function(){});
+          ours.appendChild(renderOne(m,function(){doc.ref.delete();},function(u){doc.ref.update({d:u.d,t:u.t,x:u.x,p:u.p});}));});},function(){});
       document.getElementById('mf-save').addEventListener('click',function(){
         if(!mft.value.trim()&&!mfx.value.trim()&&!pend.length)return;
         MC.add({d:mfd.value,t:mft.value.trim(),x:mfx.value.trim(),p:pend,ts:Date.now()})
@@ -854,7 +902,7 @@ try {
     } else {
       function drawOurs(list){ours.innerHTML='';(list||[]).forEach(function(m,i){
         ours.appendChild(renderOne(m,function(){sGet('ours').then(function(cur){cur=cur||[];cur.splice(i,1);
-          return sSet('ours',cur).then(function(){drawOurs(cur);});});}));});}
+          return sSet('ours',cur).then(function(){drawOurs(cur);});});},function(u){sGet('ours').then(function(cur){cur=cur||[];cur[i]={d:u.d,t:u.t,x:u.x,p:u.p};return sSet('ours',cur).then(function(){drawOurs(cur);});});}));});}
       sGet('ours').then(drawOurs).catch(function(){});
       document.getElementById('mf-save').addEventListener('click',function(){
         if(!mft.value.trim()&&!mfx.value.trim()&&!pend.length)return;
@@ -936,8 +984,8 @@ try {
 })();
 </script>
 <script>
-/* post-birthday: expand the future chapter, then glide down to it FROM THE TOP,
-   landing with the chapters above still in view so it's clear you can scroll up. */
+/* post-birthday: glide down FROM THE TOP and land AT Chapter X (past the birthday chapter).
+   The glide from the top still reveals there are chapters above. */
 (function(){
   if('scrollRestoration' in history){try{history.scrollRestoration='manual';}catch(e){}}
   function go(){
@@ -945,10 +993,9 @@ try {
     if(!fut.classList.contains('open')){
       var t=fut.querySelector('.chaptoggle'); if(t){t.click();} else {fut.classList.add('open');}
     }
-    var prev=fut.previousElementSibling;
-    while(prev && !(prev.classList && prev.classList.contains('chapgroup'))) prev=prev.previousElementSibling;
-    var anchor=prev?(prev.querySelector('.chaptoggle')||prev):fut;
-    var y=anchor.getBoundingClientRect().top+window.pageYOffset-86;
+    var bar=document.querySelector('.chapctl'); var off=(bar?bar.offsetHeight:48)+14;
+    var anchor=fut.querySelector('.chaptoggle')||fut;
+    var y=anchor.getBoundingClientRect().top+window.pageYOffset-off;
     window.scrollTo({top:y<0?0:y,behavior:'smooth'});
   }
   function arm(){
@@ -961,8 +1008,8 @@ try {
 })();
 </script>
 <script>
-/* second track: Song2 plays while the future chapter is OPEN; love-theme stays the default.
-   Gracefully falls back to love-theme if Song2 is missing. */
+/* Track by which section you're viewing: Song2 while scrolling within Chapter X (expanded);
+   love-theme whenever you're viewing any other section. */
 (function(){
   var bgm=document.getElementById('bgm'), s2=document.getElementById('bgm2'),
       fut=document.querySelector('section.tomorrow');
@@ -982,13 +1029,26 @@ try {
       if(inDone&&outDone){ clearInterval(timer); if(outA){try{outA.pause();}catch(e){}} }
     },70);
   }
-  function sync(){
-    if(!entered()) return;
-    if(fut.classList.contains('open') && s2ok){ fade(s2,bgm); } else { fade(bgm,s2); }
+  function viewingFuture(){
+    if(!fut.classList.contains('open')) return false;
+    var r=fut.getBoundingClientRect();
+    return r.top <= window.innerHeight*0.5;   /* future chapter has reached mid-screen = you're in it */
   }
-  new MutationObserver(sync).observe(fut,{attributes:true,attributeFilter:['class']});
+  var curTrack=null;
+  function decide(){
+    if(!entered()) return;
+    var want=(viewingFuture() && s2ok) ? 's2' : 'bgm';
+    if(want===curTrack) return;
+    curTrack=want;
+    if(want==='s2'){ fade(s2,bgm); } else { fade(bgm,s2); }
+  }
+  var ticking=false;
+  function onScroll(){ if(ticking)return; ticking=true; requestAnimationFrame(function(){ticking=false;decide();}); }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  window.addEventListener('resize',onScroll);
+  new MutationObserver(onScroll).observe(fut,{attributes:true,attributeFilter:['class']});
   var eb=document.getElementById('enterbtn');
-  if(eb){ eb.addEventListener('click',function(){ setTimeout(sync,1200); }); }
+  if(eb){ eb.addEventListener('click',function(){ setTimeout(decide,1300); }); }
 })();
 </script>
 </body></html>
